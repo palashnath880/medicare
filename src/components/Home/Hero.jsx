@@ -16,7 +16,7 @@ const slides_data = [
         "degree": "MBBS, FCPS (Cardiology)",
         "currentEmployeeOf": "Chattogram Medical College Hospital",
         "specialist": "Cardiology",
-        "image": "/images/doctors/doctor-img-1.webp",
+        "image": "/images/doctors/doctor-img-2.webp",
         "bgImg": "/images/medicine-img-2.webp",
     },
     {
@@ -24,7 +24,7 @@ const slides_data = [
         "degree": "MBBS, FCPS (Surgery)",
         "currentEmployeeOf": "Holy Family Hospital",
         "specialist": "Surgery",
-        "image": "/images/doctors/doctor-img-1.webp",
+        "image": "/images/doctors/doctor-img-3.webp",
         "bgImg": "/images/medicine-img-3.webp",
     },
     {
@@ -32,7 +32,7 @@ const slides_data = [
         "degree": "MBBS, FCPS (Gynecology and Obstetrics)",
         "currentEmployeeOf": "Ispahani Maternity Hospital",
         "specialist": "Gynecology and Obstetrics",
-        "image": "/images/doctors/doctor-img-1.webp",
+        "image": "/images/doctors/doctor-img-4.webp",
         "bgImg": "/images/medicine-img-4.webp",
     },
     {
@@ -40,7 +40,7 @@ const slides_data = [
         "degree": "MBBS, FCPS (Pediatrics)",
         "currentEmployeeOf": "Chittagong Shishu Hospital",
         "specialist": "Pediatrics",
-        "image": "/images/doctors/doctor-img-1.webp",
+        "image": "/images/doctors/doctor-img-5.webp",
         "bgImg": "/images/medicine-img-5.webp",
     },
     {
@@ -48,7 +48,7 @@ const slides_data = [
         "degree": "MBBS, FCPS (Neurology)",
         "currentEmployeeOf": "Chattogram Metropolitan Hospital",
         "specialist": "Neurology",
-        "image": "/images/doctors/doctor-img-1.webp",
+        "image": "/images/doctors/doctor-img-6.webp",
         "bgImg": "/images/medicine-img-1.webp",
     },
     {
@@ -56,7 +56,7 @@ const slides_data = [
         "degree": "MBBS, FCPS (Psychiatry)",
         "currentEmployeeOf": "Chattogram Mental Hospital",
         "specialist": "Psychiatry",
-        "image": "/images/doctors/doctor-img-1.webp",
+        "image": "/images/doctors/doctor-img-7.webp",
         "bgImg": "/images/medicine-img-2.webp",
     },
     {
@@ -64,7 +64,7 @@ const slides_data = [
         "degree": "MBBS, FCPS (Otolaryngology)",
         "currentEmployeeOf": "Chattogram ENT Hospital",
         "specialist": "Otolaryngology",
-        "image": "/images/doctors/doctor-img-1.webp",
+        "image": "/images/doctors/doctor-img-3.webp",
         "bgImg": "/images/medicine-img-3.webp",
     },
     {
@@ -72,7 +72,7 @@ const slides_data = [
         "degree": "MBBS, FCPS (Ophthalmology)",
         "currentEmployeeOf": "Chattogram Eye Hospital",
         "specialist": "Ophthalmology",
-        "image": "/images/doctors/doctor-img-1.webp",
+        "image": "/images/doctors/doctor-img-4.webp",
         "bgImg": "/images/medicine-img-4.webp",
     },
     {
