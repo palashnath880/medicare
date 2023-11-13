@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AiFillHeart, AiOutlineClose } from 'react-icons/ai';
 
 
@@ -7,9 +7,9 @@ const VisitTimesPopup = ({ open, close }) => {
 
     const ref = useRef();
 
-    const handleClose = useCallback(() => {
+    const handleClose = () => {
         close();
-    });
+    }
 
     useEffect(() => {
 
@@ -39,7 +39,7 @@ const VisitTimesPopup = ({ open, close }) => {
             document.removeEventListener('click', __outside_click);
         }
 
-    }, [open, handleClose]);
+    }, [open]);
 
     return <div ref={ref} className={`fixed top-0 left-0 w-full h-screen bg-black p-5 bg-opacity-20 grid place-items-center duration-200 transition-opacity ${open ? 'visible opacity-100' : 'invisible opacity-0'}`}>
         <div className={`modal_body bg-white p-5 rounded-xl shadow-xl sm:w-[400px] max-sm:w-full duration-200 ${open ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
@@ -112,7 +112,7 @@ const BestDoctors = () => {
         <section>
             <div className='container mx-auto px-5 py-16'>
                 <h1 className='text-4xl font-bold text-center'>
-                    Best <span className='text-primary'>Doctor's</span>
+                    Best <span className='text-primary'>Doctors</span>
                 </h1>
                 <div className='mt-16'>
                     <div className='grid grid-cols-4 gap-5'>
