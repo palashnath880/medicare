@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AiFillHeart, AiOutlineClose } from 'react-icons/ai';
 
 
@@ -7,9 +7,9 @@ const VisitTimesPopup = ({ open, close }) => {
 
     const ref = useRef();
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         close();
-    }
+    });
 
     useEffect(() => {
 
@@ -39,7 +39,7 @@ const VisitTimesPopup = ({ open, close }) => {
             document.removeEventListener('click', __outside_click);
         }
 
-    }, [open]);
+    }, [open, handleClose]);
 
     return <div ref={ref} className={`fixed top-0 left-0 w-full h-screen bg-black p-5 bg-opacity-20 grid place-items-center duration-200 transition-opacity ${open ? 'visible opacity-100' : 'invisible opacity-0'}`}>
         <div className={`modal_body bg-white p-5 rounded-xl shadow-xl sm:w-[400px] max-sm:w-full duration-200 ${open ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
