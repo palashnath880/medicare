@@ -110,7 +110,7 @@ const BestDoctors = () => {
 
     return (
         <section>
-            <div className='container mx-auto px-5 py-10'>
+            <div className='container mx-auto px-5 py-16'>
                 <h1 className='text-4xl font-bold text-center'>
                     Best <span className='text-primary'>Doctor's</span>
                 </h1>
