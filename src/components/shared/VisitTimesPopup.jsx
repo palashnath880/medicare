@@ -1,0 +1,74 @@
+import Link from "next/link";
+
+const { useEffect, useRef } = require("react");
+const { AiOutlineClose } = require("react-icons/ai");
+
+const VisitTimesPopup = ({ open, close, doctor }) => {
+
+    const ref = useRef();
+
+    const handleClose = () => {
+        close();
+    }
+
+    useEffect(() => {
+
+        // control scrollbar
+        const body = document.querySelector('body');
+        if (open) {
+            body.style.overflowY = 'hidden';
+        } else {
+            body.style.overflowY = 'auto';
+        }
+
+        // outside detect
+        const __outside_click = (e) => {
+            if (!e.target.closest('.modal_body')) {
+                const style = window.getComputedStyle(ref.current);
+                let opacity = parseInt(style.opacity);
+                if (opacity === 1) {
+                    handleClose();
+                }
+            }
+        }
+
+        document.addEventListener('click', __outside_click);
+
+        return () => {
+            body.style.overflowY = 'auto';
+            document.removeEventListener('click', __outside_click);
+        }
+
+    }, [open]);
+
+    return <div ref={ref} className={`fixed top-0 left-0 w-full h-screen bg-black p-5 bg-opacity-20 grid place-items-center duration-200 transition-opacity ${open ? 'visible opacity-100' : 'invisible opacity-0'}`}>
+        <div className={`modal_body bg-white p-5 rounded-xl shadow-xl sm:w-[400px] max-sm:w-full duration-200 ${open ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
+            <div className='flex items-center justify-between border-b pb-3 border-primary border-opacity-40'>
+                <h3 className='font-semibold text-primary'>Visit Times</h3>
+                <button onClick={handleClose} className='w-9 aspect-square rounded-full grid place-items-center bg-primary bg-opacity-10 hover:bg-opacity-100 text-primary hover:text-white duration-200'>
+                    <AiOutlineClose className='w-5 h-5' />
+                </button>
+            </div>
+            <div className='mt-4 flex flex-col gap-3'>
+                <p className='text-sm'><span className="text-primary font-semibold">{doctor?.name}</span> at <span className='text-primary'>Medi Care</span> Clinic are available to provide you with personalized care during the following office hours:</p>
+                {Array.isArray(doctor?.visitTimes) ? doctor?.visitTimes?.map(({ days, times }, index) => <div className='flex flex-col gap-0' key={index}>
+                    <h5 className='text-sm text-primary font-semibold'>{days}</h5>
+                    <ul className='text-sm pl-5 font-medium'>
+                        {Array.isArray(times) ? times.map((time, index) => <li
+                            className='relative after:content-[""] after:w-1.5 after:aspect-square after:bg-primary after:rounded-full after:absolute after:top-1/2 after:-translate-y-1/2 after:-left-4'
+                            key={index}
+                        >
+                            {time}
+                        </li>) : null}
+                    </ul>
+                </div>) : null}
+
+                <Link href={`/doctors/booking/${doctor?.slug}`} className='text-sm mt-3 bg-primary text-center text-white border-2 border-primary font-semibold py-2.5 px-5 rounded-lg hover:bg-transparent hover:text-primary duration-200'>
+                    Book Appointment
+                </Link>
+            </div>
+        </div>
+    </div>
+}
+
+export default VisitTimesPopup;
