@@ -1,8 +1,8 @@
+'use client';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import { AiFillHeart, AiOutlineClose } from 'react-icons/ai';
 import VisitTimesPopup from '../shared/VisitTimesPopup';
-
 
 const BestDoctors = () => {
 

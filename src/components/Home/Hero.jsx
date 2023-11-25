@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import React, { useEffect, useRef } from 'react';
 import { BiSolidLeftArrow, BiSolidRightArrow } from 'react-icons/bi';

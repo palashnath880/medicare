@@ -1,16 +1,26 @@
-const mongoose = require('mongoose');
+import { connect } from "mongoose";
+
+let cachedConnection = null;
 
 const connectDB = async () => {
     try {
-        if (mongoose.connections[0].readyState) {
+
+        if (cachedConnection) {
             console.log('Already connected to MongoDB');
             return;
         }
 
-        await mongoose.connect(process.env.DB_URI, {});
+        const connection = await connect(process.env.DB_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
         console.log('Connected to MongoDB');
+
+        cachedConnection = connection;
+
+        return connection;
     } catch (err) {
-        console.log(err);
+        console.error(`MongoDB Connection Error`, err);
     }
 }
 
