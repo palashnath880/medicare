@@ -3,6 +3,8 @@
 import { signIn, useSession } from "next-auth/react";
 import Head from "next/head"
 import Image from "next/image"
+import { redirect } from "next/navigation";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -11,7 +13,8 @@ export default function Login() {
     // states
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState('');
-    const session = useSession();
+    const { data } = useSession();
+    const router = useRouter();
 
     // react-hook-form
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -40,9 +43,14 @@ export default function Login() {
         }
     }
 
+    if (data) {
+        router.push('/admin/dashboard');
+        return null;
+    }
+
     return <>
         <Head>
-            <title>Medi Care - Admin Login</title>
+            <title>Medicare - Admin Login</title>
         </Head>
 
         <div className="w-full h-screen grid place-items-center bg-center bg-cover bg-no-repeat" style={{ backgroundImage: `linear-gradient(#00000075, #00000075),url(/images/hospital-equipment.webp)` }}>
