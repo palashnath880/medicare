@@ -28,8 +28,8 @@ export default function AdminLayout({ children }) {
 
     return <div className={`${raleway.className} w-full h-screen flex`}>
         <Sidebar />
-        <div className='flex-1 overflow-y-auto pl-5 pt-5'>
-            <main>
+        <div className='flex-1 overflow-y-auto px-5 pt-5 flex flex-col'>
+            <main className='flex-1'>
                 {children}
             </main>
             <Footer />
