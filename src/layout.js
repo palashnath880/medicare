@@ -5,6 +5,9 @@ import { Raleway } from 'next/font/google';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import AdminLayout from './components/Admin/shared/AdminLayout';
+import "cropperjs/dist/cropper.css";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const raleway = Raleway({ subsets: ['latin'] });
 
@@ -30,6 +33,7 @@ const Layout = ({ children }) => {
             </>
         }
 
+        <ToastContainer />
     </>
 }
 
