@@ -51,19 +51,18 @@ const VisitTimesPopup = ({ open, close, doctor }) => {
             </div>
             <div className='mt-4 flex flex-col gap-3'>
                 <p className='text-sm'><span className="text-primary font-semibold">{doctor?.name}</span> at <span className='text-primary'>Medi Care</span> Clinic are available to provide you with personalized care during the following office hours:</p>
-                {Array.isArray(doctor?.visitTimes) ? doctor?.visitTimes?.map(({ days, times }, index) => <div className='flex flex-col gap-0' key={index}>
-                    <h5 className='text-sm text-primary font-semibold'>{days}</h5>
-                    <ul className='text-sm pl-5 font-medium'>
-                        {Array.isArray(times) ? times.map((time, index) => <li
-                            className='relative after:content-[""] after:w-1.5 after:aspect-square after:bg-primary after:rounded-full after:absolute after:top-1/2 after:-translate-y-1/2 after:-left-4'
-                            key={index}
-                        >
-                            {time}
-                        </li>) : null}
-                    </ul>
+                {Array.isArray(doctor?.visitTimes) ? doctor?.visitTimes?.map(({ day, time: { start, end } }, index) => <div className='flex flex-col gap-0' key={index}>
+                    <h5 className='text-sm text-primary flex gap-2'>
+                        <span className="font-semibold">{day}:</span>
+                        <span className="flex gap-2 items-center">
+                            <span>{start}</span>
+                            <span className="rounded-full h-[2px] w-2 bg-primary"></span>
+                            <span>{end}</span>
+                        </span>
+                    </h5>
                 </div>) : null}
 
-                <Link href={`/doctors/booking/${doctor?.slug}`} className='text-sm mt-3 bg-primary text-center text-white border-2 border-primary font-semibold py-2.5 px-5 rounded-lg hover:bg-transparent hover:text-primary duration-200'>
+                <Link href={`/doctors/booking/${doctor?.id}`} className='text-sm mt-3 bg-primary text-center text-white border-2 border-primary font-semibold py-2.5 px-5 rounded-lg hover:bg-transparent hover:text-primary duration-200'>
                     Book Appointment
                 </Link>
             </div>

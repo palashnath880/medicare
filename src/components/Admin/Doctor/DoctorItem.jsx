@@ -28,6 +28,7 @@ const DoctorItem = ({ doctor }) => {
                     <span>No Visit Times</span>
                 }
             </td>
+            <td className='px-3 py-3 bg-primary bg-opacity-5 text-primary border border-primary'></td>
         </tr>
     );
 }

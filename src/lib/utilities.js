@@ -115,3 +115,7 @@ export const modifiedToast = (text, icon) => {
         theme: 'dark',
     })
 }
+
+export const filterTimeForBooking = (inputTime, bookedTime, schedules) => {
+
+}

@@ -27,7 +27,7 @@ export default function Doctors({ doctors }) {
             <div className="grid grid-cols-3 gap-8">
                 {Array.isArray(doctors) ? doctors.map(({ image, name, currentEmployeeOf, visitPrice, degree, specialist }, index) => <div key={index} className="bg-primary bg-opacity-10 pt-5 rounded-xl shadow-xl">
                     <div className="mx-auto aspect-square w-20 overflow-hidden rounded-full bg-primary text-white">
-                        <Image src={image} width={200} height={200} alt={name} className="w-full h-full object-cover" />
+                        <Image src={image?.display_url} width={200} height={200} alt={name} className="w-full h-full object-cover" />
                     </div>
                     <div className='px-5 pt-5 pb-3 flex-1'>
                         <h3 className='text-lg font-semibold text-center text-primary'>{name}</h3>

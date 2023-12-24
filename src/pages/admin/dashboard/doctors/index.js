@@ -51,6 +51,7 @@ const Index = () => {
                                 <td className='px-3 py-3 font-semibold bg-primary bg-opacity-30 border border-primary text-center'>Current Employee Of</td>
                                 <td className='px-3 py-3 font-semibold bg-primary bg-opacity-30 border border-primary text-center'>Visit Price</td>
                                 <td className='px-3 py-3 font-semibold bg-primary bg-opacity-30 border border-primary text-center'>Visit Times</td>
+                                <td className='px-3 py-3 font-semibold bg-primary bg-opacity-30 border border-primary text-center'>Action</td>
                             </tr>
                         </thead>
                         <tbody>
