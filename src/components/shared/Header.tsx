@@ -44,9 +44,12 @@ const Header = () => {
               ))}
             </ul>
           </div>
-          <button className="bg-primary text-white text-sm font-semibold px-7 py-2.5 rounded-md duration-200 border-2 border-primary hover:bg-transparent hover:text-primary">
+          <Link
+            href={"/appointment"}
+            className="bg-primary text-white text-sm font-semibold px-7 py-2.5 rounded-md duration-200 border-2 border-primary hover:bg-transparent hover:text-primary"
+          >
             Book Appointment
-          </button>
+          </Link>
         </div>
       </div>
     </header>

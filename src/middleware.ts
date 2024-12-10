@@ -1,46 +1,22 @@
-import { withAuth } from "next-auth/middleware";
+import { auth } from "@/auth/authSetup";
+import { NextAuthRequest } from "next-auth/lib";
 
-export default withAuth(function middleware() {}, {
-  callbacks: {
-    authorized: ({ req, token }) => {
-      if (req.nextUrl.pathname.startsWith("/admin/dashboard") && !token) {
-        return false;
-      }
+export default auth((req: NextAuthRequest) => {
+  const pathname = req.nextUrl.pathname;
 
-      if (req.nextUrl.pathname === "/admin/login") {
-        return Promise.reject();
-      }
+  // if pathname starts with "/appointment"
+  if (pathname.startsWith("/appointment") && !req.auth) {
+    const loginUrl = new URL("/login", req.nextUrl.origin);
+    return Response.redirect(loginUrl);
+  }
 
-      return true;
-    },
-    signIn: () => Promise.resolve({ pathname: "/admin/dashboard" }),
-  },
-  pages: {
-    signIn: "/admin/login",
-  },
+  // if pathname equal "/login" or "/register"
+  if ((pathname === "/login" || pathname === "register") && req.auth) {
+    const homeUrl = new URL("/", req.nextUrl.origin);
+    return Response.redirect(homeUrl);
+  }
 });
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/appointment/:path*", "/login", "/register"],
 };
-
-// export default async function middleware(req) {
-
-//     const url = req.url;
-//     const { origin } = req.nextUrl;
-
-//     const token = await getToken({ req });
-//     const session = await getSession({ req });
-
-//     console.log(`token`, session)
-
-//     // if admin not logged in
-//     if (!session && url?.includes('/admin/dashboard')) {
-//         return NextResponse.redirect(`${origin}/admin/login`);
-//     } else if (session && url?.includes('/admin/login')) {
-//         return NextResponse.redirect(`${origin}/admin/dashboard`);
-//     }
-
-//     return NextResponse.next();
-
-// }
