@@ -12,6 +12,9 @@ const raleway = Raleway({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Medicare",
+  icons: {
+    icon: "/images/logo.png",
+  },
 };
 
 export default function RootLayout({
