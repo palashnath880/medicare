@@ -1,43 +1,16 @@
-"use client";
+"use server";
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { AiFillHeart, AiOutlineClose } from "react-icons/ai";
 import VisitTimesPopup from "../shared/VisitTimesPopup";
 import Doctor from "../shared/Doctor";
+import { getDoctors } from "../../../actions/doctors";
 
-const BestDoctors = () => {
+const BestDoctors = async () => {
   // states
-  const [popup, setPopup] = useState(false);
+  // const [popup, setPopup] = useState(false);
 
-  const doctors = [
-    {
-      id: "10",
-      name: "Dr. Md. Abdullah Mamun",
-      degree: "MBBS, FCPS (Medicine)",
-      currentEmployeeOf: "Chattogram General Hospital",
-      specialist: "Medicine",
-      visitPrice: 300,
-      image: "/images/doctors/doctor-img-1.webp",
-    },
-    {
-      id: "10",
-      name: "Dr. Md. Ashrafuzzaman",
-      degree: "MBBS, FCPS (Cardiology)",
-      currentEmployeeOf: "Chattogram Medical College Hospital",
-      specialist: "Cardiology",
-      visitPrice: 300,
-      image: "/images/doctors/doctor-img-2.webp",
-    },
-    {
-      id: "10",
-      name: "Dr. Md. Monirul Islam",
-      degree: "MBBS, FCPS (Surgery)",
-      currentEmployeeOf: "Holy Family Hospital",
-      specialist: "Surgery",
-      visitPrice: 300,
-      image: "/images/doctors/doctor-img-3.webp",
-    },
-  ];
+  const doctors = await getDoctors();
 
   return (
     <section>

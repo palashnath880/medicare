@@ -1,4 +1,7 @@
+import { getToken } from "next-auth/jwt";
+import { NextRequest } from "next/server";
 import { toast } from "react-toastify";
+import prisma from "./prisma";
 
 export const convertTimeStringToDateObject = (timeString) => {
   if (
@@ -85,15 +88,12 @@ export const isTimeBetween = (startTime, endTime, time) => {
   return false;
 };
 
-export const uploadImage = (image) =>
+export const uploadImage = (image: Blob) =>
   new Promise(async (resolve, reject) => {
     try {
-      const imgRes = await fetch(image);
-      const blob = await imgRes.blob();
-
       const url = `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_KEY}`;
       const form = new FormData();
-      form.append("image", blob);
+      form.append("image", image);
       // form.append('key', process.env.NEXT_PUBLIC_IMGBB_KEY);
 
       const res = await fetch(url, {
@@ -126,4 +126,30 @@ export const displayPrice = (amount: number) => {
     currency: "bdt",
   }).format(amount);
   return formattedNumber;
+};
+
+export const isAdmin = async (req: NextRequest) => {
+  const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+  if (!token) return false;
+  const user = await prisma.user.findUnique({ where: { email: token.email } });
+  if (!user.isAdmin) return false;
+  return user;
+};
+
+export const dataURLToBlob = (dataURL: string) => {
+  // Split the Data URL to get the base64 content
+  const [header, base64String] = dataURL.split(",");
+  const mimeType = header.match(/:(.*?);/)[1]; // Extract MIME type
+
+  // Decode the base64 string into binary data
+  const byteString = atob(base64String);
+  const arrayBuffer = new Uint8Array(byteString.length);
+
+  // Fill the ArrayBuffer with binary data
+  for (let i = 0; i < byteString.length; i++) {
+    arrayBuffer[i] = byteString.charCodeAt(i);
+  }
+
+  // Create and return the Blob
+  return new Blob([arrayBuffer], { type: mimeType });
 };

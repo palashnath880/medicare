@@ -5,19 +5,32 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { Button } from "@nextui-org/button";
+import { Input } from "@nextui-org/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+
+type Inputs = {
+  login: string;
+  password: string;
+};
 
 export default function Page() {
   // states
   const [submitting, setSubmitting] = useState(false);
+  const [isShow, setIsShow] = useState<boolean>(false);
   const [error, setError] = useState("");
+  const search = useSearchParams();
+  const redirectTo = search.get("redirectTo") || window.location.origin;
+  const router = useRouter();
 
   // react-hook-form
   const {
-    register,
     handleSubmit,
     reset,
+    register,
     formState: { errors },
-  } = useForm();
+  } = useForm<Inputs>();
 
   // login handler
   const loginHandler = async (data) => {
@@ -27,10 +40,11 @@ export default function Page() {
     try {
       const login = await signIn("credentials", {
         redirect: false,
-        throwOnError: true,
+        redirectTo: redirectTo,
+        // throwOnError: false,
         ...data,
       });
-      if (login.error !== "") {
+      if (login.error !== null) {
         const message =
           login.error === "CredentialsSignin"
             ? "Invalid email or password"
@@ -38,9 +52,10 @@ export default function Page() {
         setError(message);
       } else {
         reset();
+        router.replace(login.url);
       }
-    } catch (err) {
-      console.error(err);
+    } catch {
+      setError("Sorry! Something went wrong");
     } finally {
       setSubmitting(false);
     }
@@ -66,47 +81,49 @@ export default function Page() {
             />
           </div>
           <form className="mt-2" onSubmit={handleSubmit(loginHandler)}>
-            <h2 className="text-lg text-primary font-semibold text-center">
+            <h2 className="text-lg w-full text-primary font-semibold text-center">
               Login
             </h2>
-            <div className="flex flex-col gap-4 mt-3 font-medium">
-              <div className="flex flex-col gap-1">
-                <label htmlFor="email" className="text-sm text-primary">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  placeholder="example@gmail.com"
-                  className={`text-sm text-primary border ${
-                    errors["email"] ? "border-red-500" : "border-primary"
-                  } bg-transparent rounded-lg px-3 py-2.5 outline-none`}
-                  {...register("email", {
-                    required: true,
-                    pattern: {
-                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                      message: "invalid",
-                    },
-                  })}
-                />
-                {errors?.email?.message === "invalid" && (
-                  <span className="text-xs text-red-500">Invalid Email</span>
-                )}
-              </div>
-              <div className="flex flex-col gap-1">
-                <label htmlFor="password" className="text-sm text-primary">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  placeholder="password"
-                  className={`text-sm text-primary border ${
-                    errors["password"] ? "border-red-500" : "border-primary"
-                  } bg-transparent rounded-lg px-3 py-2.5 outline-none`}
-                  {...register("password", { required: true })}
-                />
-              </div>
+            <div className="flex flex-col gap-4 mt-3 font-medium w-full">
+              {/* email input */}
+
+              <Input
+                isRequired={true}
+                label="Email or Phone"
+                color="primary"
+                {...register("login", {
+                  required: "Please enter your email or phone",
+                })}
+                isInvalid={Boolean(errors?.login)}
+                errorMessage={errors?.login?.message}
+              />
+
+              {/* password input */}
+              <Input
+                isRequired={true}
+                label="Password"
+                color="primary"
+                {...register("password", {
+                  required: "Please enter your password",
+                })}
+                type={isShow ? "text" : "password"}
+                isInvalid={Boolean(errors["password"])}
+                errorMessage={errors?.password?.message}
+                endContent={
+                  <button
+                    type="button"
+                    className="self-center mt-1"
+                    onClick={() => setIsShow(!isShow)}
+                  >
+                    {isShow ? (
+                      <IoMdEye className="w-6 h-6" />
+                    ) : (
+                      <IoMdEyeOff className="w-6 h-6" />
+                    )}
+                  </button>
+                }
+              />
+
               {error && (
                 <p className="text-red-500 text-sm text-center font-semibold">
                   {error}
@@ -118,12 +135,9 @@ export default function Page() {
                   here
                 </Link>
               </p>
-              <button
-                disabled={submitting}
-                className="px-5 py-2.5 bg-primary border-2 border-primary text-white rounded-lg text-sm font-semibold hover:bg-transparent hover:text-primary duration-200"
-              >
+              <Button disabled={submitting} color="primary" type="submit">
                 {submitting ? "Processing" : "Login"}
-              </button>
+              </Button>
             </div>
           </form>
         </div>

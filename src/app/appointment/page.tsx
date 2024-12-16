@@ -1,10 +1,14 @@
+"use client";
+
 import React from "react";
 import PageHeading from "../../components/shared/PageHeading";
 import AppointmentItem from "../../components/Appointment/AppointmentItem";
 import Image from "next/image";
 import { FiLogOut } from "react-icons/fi";
+import { Button } from "@nextui-org/button";
+import { signOut } from "next-auth/react";
 
-export default function page() {
+export default function Page() {
   const profile_data = {
     Name: "Palash Nath",
     "Phone No.": "+8801304780828",
@@ -53,10 +57,13 @@ export default function page() {
                   </table>
                 </div>
                 {/* logout button */}
-                <button className="rounded-md bg-primary text-white text-sm py-2.5 shadow-md flex gap-2 items-center justify-center">
-                  <FiLogOut className="w-4 h-4" />
+                <Button
+                  color="primary"
+                  startContent={<FiLogOut className="w-4 h-4" />}
+                  onPress={() => signOut()}
+                >
                   Logout
-                </button>
+                </Button>
               </div>
             </div>
           </div>

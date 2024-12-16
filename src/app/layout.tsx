@@ -1,13 +1,12 @@
 import React from "react";
 import { Raleway } from "next/font/google";
-import "cropperjs/dist/cropper.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-datepicker/dist/react-datepicker.css";
-import Header from "../components/shared/Header";
-import Footer from "../components/shared/Footer";
 import "./globals.css";
 import type { Metadata } from "next";
+import { NextUIProvider } from "@nextui-org/react";
+import LayoutProvider from "./layoutProvider";
 
 const raleway = Raleway({ subsets: ["latin"] });
 
@@ -23,10 +22,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={raleway.className}>
-        <Header />
-        <main>{children}</main>
-        <Footer />
-        <ToastContainer />
+        <NextUIProvider>
+          <LayoutProvider>{children}</LayoutProvider>
+          <ToastContainer />
+        </NextUIProvider>
       </body>
     </html>
   );
