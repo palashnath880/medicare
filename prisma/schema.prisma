@@ -24,12 +24,21 @@ model Doctor {
   specialist        String
   employeeOf        String?
   visitPrice        Int
-  visitTimes        Json[]
+  visitTimes        VisitTime[]
   createdAt         DateTime @default(now())
   imageId           String?   @unique @db.ObjectId
   image             Image?    @relation(fields: [imageId], references: [id])
   degreeId          String?  @db.ObjectId
   degree            Degree?  @relation(fields: [degreeId], references: [id])
+}
+
+model VisitTime {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  fromDay Int
+  toDay   Int
+  times   String[]
+  doctorId  String @db.ObjectId
+  doctor    Doctor @relation(fields: [doctorId],references: [id])
 }
 
 model Image {
