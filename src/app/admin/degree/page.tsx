@@ -5,12 +5,16 @@ import {
   Avatar,
   AvatarGroup,
   Button,
+  ButtonGroup,
   Input,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Spinner,
   Table,
   TableBody,
@@ -31,6 +35,7 @@ import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import { MdDelete } from "react-icons/md";
 
 type DegreeType = Degree & {
   doctor: Doctor & { image: Image }[];
@@ -102,6 +107,63 @@ const AddModal = ({
         </ModalFooter>
       </ModalContent>
     </Modal>
+  );
+};
+
+const DeleteAction = ({
+  degree,
+  refetch,
+}: {
+  degree: Degree;
+  refetch: () => void;
+}) => {
+  // state
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  // delete degree query
+  const deleteDegree = useMutation<any, any, string>({
+    mutationFn: (id) => axios.delete(`/api/degree/${id}`),
+    onSuccess: () => {
+      toast.success(`Degree deleted.`);
+      setIsOpen(false);
+      refetch();
+    },
+    onError: () => {
+      toast.error(`Sorry! Degree could not be deleted.`);
+    },
+  });
+
+  return (
+    <Popover
+      placement="left-end"
+      radius="sm"
+      isOpen={isOpen}
+      onOpenChange={setIsOpen}
+    >
+      <PopoverTrigger>
+        <Button isIconOnly color="danger">
+          <MdDelete className="w-5 h-5" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent>
+        <div className="px-2 py-2 w-60">
+          <p className="font-medium pb-2 text-center">
+            Are you sure to delete <br /> <b>{degree.name}</b>
+          </p>
+          <ButtonGroup fullWidth isDisabled={deleteDegree.isLoading}>
+            <Button
+              color="primary"
+              onPress={() => deleteDegree.mutate(degree.id)}
+            >
+              Yes
+            </Button>
+            <Button color="danger" onPress={() => setIsOpen(false)}>
+              No
+            </Button>
+          </ButtonGroup>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 };
 
@@ -225,7 +287,7 @@ export default function Page() {
                     {moment(degree.createdAt).format("lll")}
                   </TableCell>
                   <TableCell>
-                    <></>
+                    <DeleteAction degree={degree} refetch={refetch} />
                   </TableCell>
                 </TableRow>
               ))
