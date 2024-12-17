@@ -14,7 +14,7 @@ const PageHeading = ({
         backgroundImage: `linear-gradient(#00000075, #00000075), url(${bgImg})`,
       }}
     >
-      <div className="container mx-auto aspect-[16/3.5] grid place-items-center">
+      <div className="container mx-auto max-sm:aspect-[16/5.5] aspect-[16/5] md:aspect-[16/3.5] grid place-items-center">
         <h1 className="text-center text-5xl font-semibold text-white">
           {name}
         </h1>
