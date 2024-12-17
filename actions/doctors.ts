@@ -8,7 +8,7 @@ export const getDoctors = async (): Promise<
 > => {
   const doctors = await prisma.doctor.findMany({
     where: {},
-    include: { image: true, degree: true },
+    include: { image: true, degree: true, visitTimes: true },
   });
   return doctors;
 };
