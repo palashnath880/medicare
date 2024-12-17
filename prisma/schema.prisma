@@ -37,8 +37,9 @@ model VisitTime {
   fromDay Int
   toDay   Int
   times   String[]
-  doctorId  String @db.ObjectId
-  doctor    Doctor @relation(fields: [doctorId],references: [id])
+  doctorId   String @db.ObjectId
+  doctor     Doctor @relation(fields: [doctorId],references: [id])
+  createdAt  DateTime @default(now())
 }
 
 model Image {
@@ -49,7 +50,8 @@ model Image {
 }
 
 model Degree {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  name   String
-  doctor Doctor[]
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  doctor    Doctor[]
+  createdAt DateTime @default(now())
 }
