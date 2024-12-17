@@ -2,6 +2,8 @@
 
 import PageHeading from "@/components/Admin/shared/PageHeading";
 import {
+  Avatar,
+  AvatarGroup,
   Button,
   Input,
   Modal,
@@ -18,7 +20,7 @@ import {
   TableRow,
   useDisclosure,
 } from "@nextui-org/react";
-import { Degree } from "@prisma/client";
+import { Degree, Doctor, Image } from "@prisma/client";
 import axios, { AxiosError } from "axios";
 import React, { useState } from "react";
 import { useMutation, useQuery } from "react-query";
@@ -27,6 +29,12 @@ import { FaPlus, FaSearch } from "react-icons/fa";
 import { FiRefreshCw } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+
+type DegreeType = Degree & {
+  doctor: Doctor & { image: Image }[];
+};
 
 const AddModal = ({
   isOpen,
@@ -98,6 +106,10 @@ const AddModal = ({
 };
 
 export default function Page() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get("search") || "";
+
   // modal controller
   const { isOpen, onOpen, onOpenChange } = useDisclosure({ id: "DegreeAdd" });
 
@@ -107,53 +119,46 @@ export default function Page() {
     isLoading,
     isSuccess,
     refetch,
-  } = useQuery<Degree[]>({
-    queryKey: ["degree"],
+  } = useQuery<DegreeType[]>({
+    queryKey: ["degree", searchQuery],
     queryFn: async () => {
-      const res = await axios.get(`/api/degree`);
+      const res = await axios.get(`/api/degree?search=${searchQuery}`);
       return res.data;
     },
   });
 
   // table top content
   const topContent = React.useMemo(() => {
+    // search handler
+    const searchHandler = (text: string) => {
+      const search = new URLSearchParams(window.location.search);
+      search.set("search", text);
+      router.push(`?${search.toString()}`);
+    };
+
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
-          <Input
-            isClearable
+          <form
             className="w-full sm:max-w-[30%]"
-            placeholder="Search by name..."
-            startContent={<FaSearch />}
-            // value={filterValue}
-            // onClear={() => onClear()}
-            // onValueChange={onSearchChange}
-          />
+            onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              const value = formData.get("search").toString() || "";
+              searchHandler(value);
+            }}
+          >
+            <Input
+              isClearable
+              className="w-full"
+              placeholder="Search by name..."
+              startContent={<FaSearch />}
+              defaultValue={searchQuery}
+              onClear={() => searchHandler("")}
+              name="search"
+            />
+          </form>
           <div className="flex gap-3">
-            {/* <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
-                >
-                  Columns
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={visibleColumns}
-                selectionMode="multiple"
-                onSelectionChange={setVisibleColumns}
-              >
-                {columns.map((column) => (
-                  <DropdownItem key={column.uid} className="capitalize">
-                    {capitalize(column.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown> */}
             <Button
               color="primary"
               startContent={<FiRefreshCw />}
@@ -166,25 +171,14 @@ export default function Page() {
             </Button>
           </div>
         </div>
-        {/* <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">
-            Total {users.length} users
+            Total {degrees?.length || 0} degrees
           </span>
-          <label className="flex items-center text-default-400 text-small">
-            Rows per page:
-            <select
-              className="bg-transparent outline-none text-default-400 text-small"
-              onChange={onRowsPerPageChange}
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-            </select>
-          </label>
-        </div> */}
+        </div>
       </div>
     );
-  }, [refetch, onOpen]);
+  }, [refetch, onOpen, degrees, searchQuery, router]);
 
   return (
     <>
@@ -204,14 +198,29 @@ export default function Page() {
         </TableHeader>
         <TableBody
           isLoading={isLoading}
-          loadingContent={<Spinner />}
+          loadingContent={
+            <div className="mt-20">
+              <Spinner />
+            </div>
+          }
           emptyContent="No degree to display"
         >
           {isSuccess && degrees?.length > 0
             ? degrees.map((degree, index) => (
                 <TableRow key={index}>
                   <TableCell>{degree.name}</TableCell>
-                  <TableCell>0</TableCell>
+                  <TableCell>
+                    {degree.doctor?.length > 0 && (
+                      <AvatarGroup isBordered>
+                        <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026024d" />
+                        <Avatar src="https://i.pravatar.cc/150?u=a04258a2462d826712d" />
+                        <Avatar src="https://i.pravatar.cc/150?u=a042581f4e29026704d" />
+                        <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026302d" />
+                        <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026702d" />
+                        <Avatar src="https://i.pravatar.cc/150?u=a04258114e29026708c" />
+                      </AvatarGroup>
+                    )}
+                  </TableCell>
                   <TableCell>
                     {moment(degree.createdAt).format("lll")}
                   </TableCell>

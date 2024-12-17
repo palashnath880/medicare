@@ -52,6 +52,6 @@ model Image {
 model Degree {
   id        String @id @default(auto()) @map("_id") @db.ObjectId
   name      String
-  doctor    Doctor[]
+  doctor   Doctor[]
   createdAt DateTime @default(now())
 }

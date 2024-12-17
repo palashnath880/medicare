@@ -2,9 +2,35 @@ import prisma from "@/lib/prisma";
 import { isAdmin } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const result = await prisma.degree.findMany({});
+    const { searchParams } = new URL(req.url);
+    const search = searchParams.get("search") || "";
+
+    const result = await prisma.degree.findMany({
+      where: search
+        ? {
+            name: { contains: search, mode: "insensitive" },
+          }
+        : {},
+      orderBy: { createdAt: "desc" },
+      select: {
+        name: true,
+        createdAt: true,
+        id: true,
+        doctor: {
+          select: {
+            id: true,
+            name: true,
+            image: {
+              select: {
+                display_url: true,
+              },
+            },
+          },
+        },
+      },
+    });
     return NextResponse.json(result);
   } catch (err) {
     return NextResponse.json(err, { status: 400 });
