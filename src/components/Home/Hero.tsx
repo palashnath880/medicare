@@ -95,7 +95,7 @@ export default function Hero() {
     <section className="mt-10">
       <div className="container px-5 mx-auto">
         <Swiper
-          slidesPerView={4}
+          slidesPerView={1}
           spaceBetween={30}
           speed={1000}
           autoplay={{ delay: 1500, disableOnInteraction: false }}
@@ -105,6 +105,17 @@ export default function Hero() {
           }}
           className="!px-3 !pb-10"
           modules={[Pagination, Autoplay]}
+          breakpoints={{
+            460: {
+              slidesPerView: 2,
+            },
+            768: {
+              slidesPerView: 3,
+            },
+            1024: {
+              slidesPerView: 4,
+            },
+          }}
         >
           {slides_data.map((slide, index) => (
             <SwiperSlide key={index} className="py-3 cursor-pointer">

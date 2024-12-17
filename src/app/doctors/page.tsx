@@ -6,7 +6,6 @@ import Doctor from "../../components/shared/Doctor";
 export default async function page() {
   // get doctors
   const doctors = await getDoctors();
-  console.log(doctors);
 
   return (
     <>
