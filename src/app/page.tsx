@@ -41,8 +41,8 @@ export default function Page() {
 
       <section>
         <div className="max-lg:container md:w-[900px] mx-auto px-5 pt-10 pb-20">
-          <div className="flex items-center gap-10">
-            <div className="w-1/2">
+          <div className="flex max-md:flex-col items-center gap-10">
+            <div className="w-full md:w-1/2">
               <div className="aspect-video">
                 <Image
                   src="/images/clock.webp"
@@ -53,9 +53,9 @@ export default function Page() {
                 />
               </div>
             </div>
-            <div className="w-1/2">
+            <div className="w-full md:w-1/2">
               <div className="flex flex-col gap-4">
-                <h1 className="text-4xl font-bold">
+                <h1 className="max-sm:text-2xl text-4xl font-bold">
                   Appoiment <span className="text-primary">Scheduling</span>
                 </h1>
                 <p className="text-sm">
