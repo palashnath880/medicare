@@ -7,8 +7,8 @@ const About = () => {
   return (
     <section>
       <div className="container mx-auto px-5 py-20">
-        <div className="flex gap-10 items-center">
-          <div className="w-1/2">
+        <div className="flex max-md:flex-col-reverse gap-10 items-center">
+          <div className="w-full md:w-1/2">
             <h1 className="text-4xl font-bold">
               About <span className="text-primary">Medi Care</span>
             </h1>
@@ -28,7 +28,7 @@ const About = () => {
               Doctors
             </Link>
           </div>
-          <div className="w-1/2">
+          <div className="w-full md:w-1/2">
             <div className="aspect-[16/11] rounded-xl shadow-xl overflow-hidden">
               <Image
                 src="/images/hospital.webp"

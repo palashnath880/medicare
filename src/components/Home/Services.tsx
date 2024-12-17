@@ -32,7 +32,7 @@ const Services = () => {
           Our <span className="text-primary">Services</span>
         </h1>
         <div className="mt-16">
-          <div className="grid grid-cols-4 gap-5">
+          <div className="grid max-sm:grid-cols-1 max-lg:grid-cols-2 grid-cols-4 gap-5">
             {services_data.map(({ content, image, title }, index) => (
               <div
                 key={index}
