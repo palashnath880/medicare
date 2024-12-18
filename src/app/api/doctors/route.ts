@@ -1,14 +1,37 @@
 import prisma from "@/lib/prisma";
 import { isAdmin } from "@/lib/utils";
-import { Doctor, Image } from "@prisma/client";
+import { Doctor, Image, Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const count = await prisma.doctor.count({});
+    const { searchParams } = new URL(req.url);
+    const page = parseInt(searchParams.get("page")) || 1;
+    const limit = parseInt(searchParams.get("limit")) || 50;
+    const search = searchParams.get("search") || "";
 
+    const skip = (page - 1) * limit;
+
+    // find query
+    const query: Prisma.DoctorWhereInput = search
+      ? {
+          OR: [
+            { name: { contains: search, mode: "insensitive" } },
+            { employeeOf: { contains: search, mode: "insensitive" } },
+            { degree: { name: { contains: search, mode: "insensitive" } } },
+          ],
+        }
+      : {};
+
+    // get all count
+    const count = await prisma.doctor.count({ where: query });
+
+    // all doctors
     const doctors = await prisma.doctor.findMany({
-      include: { degree: true, image: true },
+      where: query,
+      include: { degree: true, image: true, visitTimes: true },
+      skip: skip,
+      take: limit,
     });
 
     return NextResponse.json({ count, doctors });
